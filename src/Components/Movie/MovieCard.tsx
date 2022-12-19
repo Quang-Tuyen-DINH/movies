@@ -16,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function MovieCard(props: {movie: Movie, handleRemove: any, handleFavorite: any}) {
+const MovieCard = (props: {movie: Movie, handleRemove: any, handleFavorite: any}) => {
   const [id, setId] = useState(props.movie.id);
   const [image, setImage] = useState(MoviePhoto);
   const [title, setTitle] = useState(props.movie.title);
