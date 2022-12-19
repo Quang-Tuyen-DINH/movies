@@ -68,8 +68,8 @@ const MoviesList = () => {
   }
 
   const handleRemove = (id: string) => {
-    setCategories(Array.from(new Set(movies.map((movie: Movie) => movie.category))));
     dispatch({ type: "DELETE_MOVIE", payload: id});
+    setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))));
   }
 
   return (
