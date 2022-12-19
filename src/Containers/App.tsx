@@ -4,8 +4,7 @@ import MoviesList from './MoviesList/MoviesList';
 
 function App() {
   return (
-    <div className="App">
-      TEST
+    <div>
       <MoviesList />
     </div>
   );
