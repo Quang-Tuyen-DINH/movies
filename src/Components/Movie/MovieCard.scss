@@ -1,0 +1,33 @@
+.movie-card-container {
+  width: 280px;
+  margin: 20px;
+  text-align: center;
+
+  .card-content {
+    .content-header {
+      height: 100px;
+
+      .title {
+        padding: 8px 0 0 0;
+      }
+
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  .likesBar {
+    margin: auto;
+    width: 80%;
+  }
+
+  .card-actions {
+    justify-content: center;
+    margin: 10px;
+
+    .title {
+      font-weight: 600;
+    }
+  }
+}
