@@ -17,16 +17,16 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const MovieCard = (props: {movie: Movie, handleRemove: any, handleFavorite: any}) => {
-  const [id, setId] = useState(props.movie.id);
+  const [id, setId] = useState<string>(props.movie.id);
   const [image, setImage] = useState(MoviePhoto);
-  const [title, setTitle] = useState(props.movie.title);
-  const [category, setCategory] = useState(props.movie.category);
-  const [bio, setBio] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et porta diam.");
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(props.movie.likes);
-  const [bar, setBar] = useState(0);
-  const [disliked, setDisliked] = useState(false);
-  const [dislikes, setDislikes] = useState(props.movie.dislikes);
+  const [title, setTitle] = useState<string>(props.movie.title);
+  const [category, setCategory] = useState<string>(props.movie.category);
+  const [bio, setBio] = useState<string>("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et porta diam.");
+  const [liked, setLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(props.movie.likes);
+  const [bar, setBar] = useState<number>(0);
+  const [disliked, setDisliked] = useState<boolean>(false);
+  const [dislikes, setDislikes] = useState<number>(props.movie.dislikes);
 
   useEffect(() => {
     calculateBar();

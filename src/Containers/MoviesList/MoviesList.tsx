@@ -41,7 +41,7 @@ const MoviesList = () => {
     fetchData();
     Store.subscribe(() => {
       setMovies(Store.getState().movies);
-      setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))));
+      setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))).sort());
     })
   }, []);
 
@@ -69,7 +69,7 @@ const MoviesList = () => {
 
   const handleRemove = (id: string) => {
     dispatch({ type: "DELETE_MOVIE", payload: id});
-    setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))));
+    setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))).sort());
   }
 
   return (
