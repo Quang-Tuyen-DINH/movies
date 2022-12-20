@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Store from '../../Store/Index';
+import { useDispatch } from "react-redux";
 import './MoviesList.scss';
 import { movies$ } from "../../Shared/Services/Movies.service";
 import { Movie } from '../../Shared/Models/Movie.model';
@@ -10,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Theme, useTheme } from '@mui/material/styles';
 
-function MoviesList() {
+const MoviesList = () => {
   const itemHeight = 48;
   const itemPaddingTop = 8;
   const MenuProps = {
@@ -25,18 +27,22 @@ function MoviesList() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const dispatch = useDispatch();
 
   const fetchData = async() => {
     await movies$
       .then((res: any) => {
-        setMovies(res);
-        setCategories(Array.from(new Set(res.map((movie: Movie) => movie.category))));
+        dispatch({ type: "ADD_MOVIE", payload: res});
       })
       .catch((err) => {console.log(err)});
   }
 
   useEffect(() => {
     fetchData();
+    Store.subscribe(() => {
+      setMovies(Store.getState().movies);
+      setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))).sort());
+    })
   }, []);
 
   const getStyles = (name: string, personName: string[], theme: Theme) => {
@@ -62,8 +68,8 @@ function MoviesList() {
   }
 
   const handleRemove = (id: string) => {
-    setMovies(movies.filter(movie => movie.id !== id));
-    setCategories(Array.from(new Set(movies.map((movie: Movie) => movie.category))));
+    dispatch({ type: "DELETE_MOVIE", payload: id});
+    setCategories(Array.from(new Set(Store.getState().movies.map((movie: Movie) => movie.category))).sort());
   }
 
   return (
