@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Pagination = (props: any) => {
-  const { currentPage, maxPageLimit, minPageLimit} = props;
-  const totalPages = props.response.totalPages-1;
-  const data = props.response.data;
+const UsePagination = (data: any, itemsPerPage: number) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const maxPage = Math.ceil(data.length / itemsPerPage);
 
-  return (
-    <div>Pagination</div>
-  )
+  const currentData = () => {
+    const begin = (currentPage - 1) * itemsPerPage;
+    const end = begin + itemsPerPage;
+    return data.slice(begin, end);
+  }
+
+  const next = () => {
+    setCurrentPage(currentPage => Math.min(currentPage + 1, maxPage));
+  }
+
+  const prev = () => {
+    setCurrentPage(currentPage => Math.max(currentPage - 1, 1));
+  }
+
+  const jump = (page: number) => {
+    const pageNumber = Math.max(1, page);
+    setCurrentPage(currentPage => Math.min(pageNumber, maxPage));
+  }
+
+  return {next, prev, jump, currentData, currentPage, maxPage}
 }
 
-export default Pagination
+export default UsePagination
