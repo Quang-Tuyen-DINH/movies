@@ -9,10 +9,14 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Theme, useTheme } from '@mui/material/styles';
+import  Pagination from "@mui/material/Pagination";
+import UsePagination from "../../Components/Pagination/Pagination"
+import Box from '@mui/material/Box';
 
 const MoviesList = () => {
+  const dispatch = useDispatch();
   const itemHeight = 48;
   const itemPaddingTop = 8;
   const MenuProps = {
@@ -27,7 +31,22 @@ const MoviesList = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const dispatch = useDispatch();
+  //For pagination
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(4);
+  const perPageoOptions: number[] = [2, 4, 8];
+  const count = Math.ceil(movies.length / perPage);
+  const displayedData = UsePagination(movies, perPage);
+
+  const handlePaginationClick = (e: any, p: number) => {
+    setPage(p);
+    displayedData.jump(p);
+  };
+
+  const handleSelectPerPage = (event: any) => {
+    setPerPage(event.target.value);
+  }
+  //End of pagination
 
   const fetchData = async() => {
     await movies$
@@ -75,37 +94,59 @@ const MoviesList = () => {
   return (
     <div className="movies-list-container">
       <div className="movies-filter">
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">Categories</InputLabel>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={selectedCategories}
-          onChange={handleSelect}
-          input={<OutlinedInput label="Name" />}
-          MenuProps={MenuProps}
-        >
-          {categories.map((category, index) => (
-            <MenuItem
-              key={category}
-              value={category}
-              style={getStyles(category, selectedCategories, theme)}
-            >
-              {category}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <InputLabel>Categories</InputLabel>
+          <Select
+            multiple
+            value={selectedCategories}
+            onChange={handleSelect}
+            input={<OutlinedInput label="Name" />}
+            MenuProps={MenuProps}
+          >
+            {categories.map((category, index) => (
+              <MenuItem
+                key={category}
+                value={category}
+                style={getStyles(category, selectedCategories, theme)}
+              >
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       <div className="movies">
-        {selectedCategories.length === 0 && movies.map((movie) => {
-            return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
-          })}
-        {selectedCategories.length > 0 && movies.filter(movie => selectedCategories.includes(movie.category))
-          .map((movie) => {
-            return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
-          })}
+        {selectedCategories.length === 0 && displayedData.currentData().map((movie: any) => {
+          return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
+        })}
+
+        {selectedCategories.length > 0 && displayedData.currentData().filter((movie: Movie) => selectedCategories.includes(movie.category)).map((movie: any) => {
+          return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
+        })}
+      </div>
+      <div className="pagination">
+        <Pagination
+          className="pagination-pages"
+          count={count}
+          size="medium"
+          page={page}
+          variant="outlined"
+          shape="rounded"
+          onChange={handlePaginationClick}
+        />
+        <Box className="pagination-options" sx={{ width: 60 }}>
+          <FormControl fullWidth>
+            <Select
+              value={JSON.stringify(perPage)}
+              label="Quantity"
+              onChange={handleSelectPerPage}
+            >
+              {perPageoOptions.map((value: number, index) => {
+                return<MenuItem key={index} value={value}>{value}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
+        </Box>
       </div>
     </div>
   )

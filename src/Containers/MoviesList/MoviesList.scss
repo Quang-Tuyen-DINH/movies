@@ -15,4 +15,22 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .pagination-pages {
+      width: 100%;
+
+      ul {
+        justify-content: center;
+      }
+    }
+
+    .pagination-options {
+      margin: 10px 0 0 0;
+    }
+  }
 }
