@@ -95,10 +95,8 @@ const MoviesList = () => {
     <div className="movies-list-container">
       <div className="movies-filter">
         <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="demo-multiple-name-label">Categories</InputLabel>
+          <InputLabel>Categories</InputLabel>
           <Select
-            labelId="demo-multiple-name-label"
-            id="demo-multiple-name"
             multiple
             value={selectedCategories}
             onChange={handleSelect}
