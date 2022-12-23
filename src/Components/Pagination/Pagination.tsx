@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { Movie } from '../../Shared/Models/Movie.model';
 
-const UsePagination = (data: any, itemsPerPage: number) => {
+const UsePagination = (movies: Movie[], itemsPerPage: number) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const maxPage = Math.ceil(data.length / itemsPerPage);
+  const maxPage = Math.ceil(movies.length / itemsPerPage);
 
   const currentData = () => {
     const begin = (currentPage - 1) * itemsPerPage;
     const end = begin + itemsPerPage;
-    return data.slice(begin, end);
+    return movies.slice(begin, end);
   }
 
   const next = () => {

@@ -35,8 +35,8 @@ const MoviesList = () => {
   const [page, setPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(4);
   const perPageoOptions: number[] = [2, 4, 8];
-  const count = Math.ceil(movies.length / perPage);
-  const displayedData = UsePagination(movies, perPage);
+  const count = Math.ceil(selectedCategories.length < 1 ? (movies.length / perPage) : (movies.filter((movie: Movie) => selectedCategories.includes(movie.category)).length / perPage));
+  const displayedData = UsePagination(selectedCategories.length < 1 ? movies : movies.filter((movie: Movie) => selectedCategories.includes(movie.category)), perPage);
 
   const handlePaginationClick = (e: any, p: number) => {
     setPage(p);
@@ -73,7 +73,15 @@ const MoviesList = () => {
     };
   }
 
-  const handleSelect = (event: any) => {
+  const test = (): Movie[] => {
+    if(selectedCategories.length < 1) {
+      return Store.getState().movies;
+    } else {
+      return Store.getState().movies.filter((movie: Movie) => selectedCategories.includes(movie.category));
+    }
+  }
+
+  const handleSelectCategory = (event: any) => {
     const {
       target: { value }
     } = event;
@@ -99,7 +107,7 @@ const MoviesList = () => {
           <Select
             multiple
             value={selectedCategories}
-            onChange={handleSelect}
+            onChange={handleSelectCategory}
             input={<OutlinedInput label="Name" />}
             MenuProps={MenuProps}
           >
@@ -116,13 +124,13 @@ const MoviesList = () => {
         </FormControl>
       </div>
       <div className="movies">
-        {selectedCategories.length === 0 && displayedData.currentData().map((movie: any) => {
+        { displayedData.currentData().map((movie: any) => {
           return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
         })}
 
-        {selectedCategories.length > 0 && displayedData.currentData().filter((movie: Movie) => selectedCategories.includes(movie.category)).map((movie: any) => {
+        {/* {selectedCategories.length > 0 && displayedData.currentData().filter((movie: Movie) => selectedCategories.includes(movie.category)).map((movie: any) => {
           return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
-        })}
+        })} */}
       </div>
       <div className="pagination">
         <Pagination
