@@ -9,7 +9,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { Theme, useTheme } from '@mui/material/styles';
 import  Pagination from "@mui/material/Pagination";
 import UsePagination from "../../Components/Pagination/Pagination"
@@ -73,14 +73,6 @@ const MoviesList = () => {
     };
   }
 
-  const test = (): Movie[] => {
-    if(selectedCategories.length < 1) {
-      return Store.getState().movies;
-    } else {
-      return Store.getState().movies.filter((movie: Movie) => selectedCategories.includes(movie.category));
-    }
-  }
-
   const handleSelectCategory = (event: any) => {
     const {
       target: { value }
@@ -127,10 +119,6 @@ const MoviesList = () => {
         { displayedData.currentData().map((movie: any) => {
           return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
         })}
-
-        {/* {selectedCategories.length > 0 && displayedData.currentData().filter((movie: Movie) => selectedCategories.includes(movie.category)).map((movie: any) => {
-          return <MovieCard key={movie.id} movie={movie} handleRemove={handleRemove} handleFavorite={handleFavorite}/>
-        })} */}
       </div>
       <div className="pagination">
         <Pagination
