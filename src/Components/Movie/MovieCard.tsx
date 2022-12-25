@@ -30,7 +30,7 @@ const MovieCard = (props: {movie: Movie, handleRemove: any, handleFavorite: any}
 
   useEffect(() => {
     calculateBar();
-  })
+  }, [likes, dislikes])
 
   const handleLike = () => {
     setLiked(true);
